@@ -1,0 +1,89 @@
+aca pasamos las funciones que hicimos primero para que no quede con tanto codigo.
+
+/////////FUNCION LOGIN/////////////////////////////////////////////////////////
+def login(request):
+    if request.user.is_authenticated():
+        return redirect('client:dashboard')
+    message = None
+    if request.method == 'POST':
+        username_post = request.POST['username']
+        password_post = request.POST['password']
+        user = authenticate(username = username_post, password = password_post)
+        if user is not None:
+            login_django(request, user)
+            return redirect('client:dashboard')
+        else:
+            message = 'username o password incorrectos'
+    form = LoginForm()
+    context = {
+        'form': form,
+        'message': message
+    }
+    return render(request, 'login.html', context)
+/////////FIN FUNCION LOGIN////////////////////////////////////////////////////
+
+/////////FUNCION DASHBOARD/////////////////////////////////////////////////////////
+@login_required(login_url = 'client:login')
+def dashboard(request):
+    return render(request, 'dashboard.html', {})
+/////////FIN FUNCION DASHBOARD////////////////////////////////////////////////////
+
+/////////FUNCION SHOW/////////////////////////////////////////////////////////
+def show(request):
+    return HttpResponse('Hola desde el cliente')
+/////////FIN FUNCION SHOW////////////////////////////////////////////////////
+
+/////////FUNCION CREATE/////////////////////////////////////////////////////////
+def create(request):
+    form = CreateUserForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            user = form.save(commit = False)
+            user.set_password(user.password)
+            user.save()
+            return redirect('client:login')
+    context = {
+        'form': form
+    }
+    return render(request, 'create.html', context)
+/////////FIN FUNCION CREATE////////////////////////////////////////////////////
+
+/////////CLASE EDIT VIEW/////////////////////////////////////////////////////////
+class EditView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
+    login_url = 'client/client:login'
+    model = User
+    template_name = 'client/edit.html'
+    success_url = reverse_lazy('client/client:edit')
+    form_class = EditUserForm
+    success_message = 'Tu usuario ha sido actualizado'
+
+    def form_valid(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(EditView, self).form_valid(request, *args, **kwargs)
+
+    def get_object(self, query = None):
+        return self.request.user
+/////////FIN CLASE EDIT VIEW////////////////////////////////////////////////////
+
+/////////INICIO edit_client/////////////////////////////////////////////////////////
+{% extends "base/base_admin.html" %}
+{% load staticfiles %}
+{% block title %}
+  Editar Cuenta
+{% endblock title %}
+{% block scripts %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+{% endblock scripts %}
+{% block content %}
+  <div class="class_container_form">
+    <form action="" method="post">{% csrf_token %}
+      {% include "includes/_forms.html" with form=form_user %}
+      {% include "includes/_forms.html" with form=form_client %}
+      <input class="btn #9E9E9E grey" type="submit" value="actualizar">
+    </form>
+  </div>
+{% endblock content %}
+{% block footer %}
+
+{% endblock footer %}
+/////////FIN edit_client////////////////////////////////////////////////////
