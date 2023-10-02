@@ -1,0 +1,24 @@
+{% extends "base/base_admin.html" %}
+
+{% block title %}
+  Mis Proyectos
+{% endblock title %}
+
+{% block scripts %}
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+{% endblock scripts %}
+
+{% block content %}
+  <a href="{% url 'project:create' %}">Crear Proyecto</a>
+  {% for project_user in object_list %}
+    {% with project_user.get_project as project %}
+        <a href="{% url 'project:show' project.slug %}">{{ project.title }}</a>
+    {% endwith %}
+
+  {% endfor %}
+{% endblock content %}
+
+{% block footer %}
+
+{% endblock footer %}

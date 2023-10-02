@@ -1,0 +1,32 @@
+{% extends "base/base_admin.html" %}
+
+{% block title %}
+  Colaborador
+{% endblock title %}
+
+{% block scripts %}
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+  <script type="text/javascript" src="{% static 'js/search_user.js' %}">
+
+  </script>
+{% endblock scripts %}
+
+{% block content %}
+    <h4>Colaborador {{ user.username }}</h4>
+    {% if has_permission %}
+    <div>
+      <form action="" method="POST">{% csrf_token %}
+        {% include "includes/_forms.html" with form=form only %}
+        <input class="btn #9E9E9E grey" type="submit" value="actualizar">
+      </form>
+    </div>
+    <br>
+    <br>
+    <a href="{% url 'project:delete_contributor' project.slug user.username %}">Eliminar de colaboradores</a>      
+    {% endif %}
+{% endblock content %}
+
+{% block footer %}
+
+{% endblock footer %}

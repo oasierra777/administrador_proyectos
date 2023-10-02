@@ -1,0 +1,24 @@
+{% extends "base/base_admin.html" %}
+
+{% block title %}
+  Editar Proyecto
+{% endblock title %}
+
+{% block scripts %}
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+{% endblock scripts %}
+
+{% block content %}
+  <div class="class_container_form">
+    <form action="" method="post">{% csrf_token %}
+      {% include "includes/_forms.html" with form=form_project only %}
+      {% include "includes/_forms.html" with form=form_status only %}
+      <input class="btn #9E9E9E grey" type="submit" value="actualizar">
+    </form>
+  </div>
+{% endblock content %}
+
+{% block footer %}
+
+{% endblock footer %}

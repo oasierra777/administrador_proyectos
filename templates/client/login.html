@@ -1,0 +1,40 @@
+{% extends "base/base_admin.html" %}
+{% load staticfiles %}
+{% block title %}Login{% endblock title %}
+
+{% block scripts %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}" />
+{% endblock scripts %}
+
+{% block content %}
+<div class="class_container_form">
+  <form action="" method="post">{% csrf_token %}
+    <!-- {{form.as_p}} este es el mas facil -->
+    {% for field in form %}
+      <div class="row">
+        <div class="input-field col s12">
+          <!-- si tiene errores los va a mostrar aca -->
+          {% if field.errors %}
+            {{field.errors}}
+          {% endif %}
+          <!--  iteramos sobre las clases porque puede tener varias-->
+          {{ field }}
+          <label class="{% for class in field.label_clasess %} {{class}} {% endfor %}" for="{{ field.name }}">
+              {{field.label}}
+          </label>
+        </div>
+      </div>
+    {% endfor %}
+    <input class="btn #9E9E9E grey" type="submit" value="ingreso">
+  </form>
+</div>
+{% endblock content %}
+
+{% block footer %}
+<footer>
+  <a href="{% url 'client:create'%}">Registrate</a>
+  <a href="#">olvidaste tu contrasena</a>
+  <a href="#">Olvide mi contrasena</a>
+  <p>Crea una nueva cuenta <a href="{% url 'client:create' %}">aqui</a></p>
+</footer>
+{% endblock footer %}

@@ -1,0 +1,37 @@
+{% extends "base/base_admin.html" %}
+{% load staticfiles %}
+
+{% block title %}Crear Usuario{% endblock title %}
+
+{% block scripts %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+{% endblock scripts %}
+
+{% block content %}
+  <div class="class_container_form">
+    <form action="" method="post">{% csrf_token%}
+       <!-- {{form.as_p}} -->
+       {% for field in form %}
+         <div class="row">
+           <div class="input-field col 12">
+             {% if field.errors %}
+              {{ field.errors }}
+             {% endif %}
+             {{ field }}
+             <label class="{% for class in field.label_clasess %} {{class}} {% endfor %}" for="{{field.name}}">
+                {{ field.label}}
+             </label>
+           </div>
+         </div>
+       {% endfor %}
+       <input class="btn #9E9E9E grey" type="submit" value="create">
+    </form>
+  </div>
+
+{% endblock content %}
+
+{% block footer %}
+  <footer>
+    <p>Ya tengo una <a href="{% url 'client:login' %}">cuenta </a></p>
+  </footer>
+{% endblock footer %}

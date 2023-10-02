@@ -1,0 +1,17 @@
+{% extends "base/base_admin.html" %}
+{% load staticfiles %}
+{% block title %}
+  Editar Cuenta
+{% endblock title %}
+{% block scripts %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+{% endblock scripts %}
+{% block content %}
+  <p>para salir de una sin ir a logout</p>
+  <a href="{% url 'client:logout' %}">Logut</a>
+  <a href="{% url 'client:show' user.username %}">Show</a>
+  <a href="{% url 'project:my_projects' %}">Mis Proyectos</a>
+{% endblock content %}
+{% block footer %}
+
+{% endblock footer %}

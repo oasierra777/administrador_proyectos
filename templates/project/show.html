@@ -1,0 +1,21 @@
+{% extends "base/base_admin.html" %}
+
+{% block title %}
+  {{ project.title }}
+{% endblock title %}
+
+{% block scripts %}
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+{% endblock scripts %}
+
+{% block content %}
+    <h4>{{ project.title }}</h4>
+    {% if has_permission %}
+      <a href="{% url 'project:edit' project.slug %}">Editar</a>
+    {% endif %}
+{% endblock content %}
+
+{% block footer %}
+
+{% endblock footer %}
